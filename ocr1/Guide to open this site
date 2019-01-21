@@ -1,0 +1,8 @@
+# Running The Website
+
+Download xampp from "https://www.apachefriends.org/xampp-files/7.2.3/xampp-win32-7.2.3-0-VC15-installer.exe"
+Install xampp.
+After installation go to "C:\xampp" and open "xampp-control.exe".
+Start Apache and MySQL.
+Copy ocr1 folder and paste it into "C:/xampp/htdocs".
+Now open browser and in the search bar type "localhost/ocr1" to open the website.

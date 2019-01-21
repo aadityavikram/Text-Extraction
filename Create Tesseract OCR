@@ -1,0 +1,66 @@
+--> https://github.com/tesseract-ocr/tesseract/wiki/Command-Line-Usage
+
+
+--> The fastest way (maybe not the ideal) is to implement the following steps:
+  - Use OpenCV to detect the paper sheet or the text area;
+  - Perform any processing necessary to deskew the image (if necessary);
+  - Save the image to disk as TIFF;
+  - and finally, call Tesseract cmd-line application passing the TIFF image as parameter to start the text recognition process.
+
+
+
+--> import cv2
+    img = cv2.imread("/home/abc/Downloads/1ltYB.png", 0)
+    ret, thresh = cv2.threshold(img, 10, 255, cv2.THRESH_OTSU)
+    print "Threshold selected : ", ret
+    cv2.imwrite("./debug.png", thresh)
+
+
+
+
+--> https://www.pyimagesearch.com/2017/07/10/using-tesseract-ocr-python/
+
+
+
+
+--> https://www.pyimagesearch.com/2017/07/17/credit-card-ocr-with-opencv-and-python/
+
+
+--> http://answers.opencv.org/question/83031/extracting-text-from-an-image-opencv/
+
+
+--> Tesseract in C:-
+    
+    #include <tesseract/baseapi.h>
+    #include <leptonica/allheaders.h>
+    #include <iostream>
+    #include <string.h>
+    #include <vector>
+    #include <opencv2/highgui/highgui.hpp>
+    #include "opencv2/imgproc/imgproc.hpp"
+    #include "opencv2/nonfree/features2d.hpp"
+    int main( int argc, char** argv )
+    {
+      cout << "OCR: starts" << endl;
+      Mat scene_plate = imread("plate.jpg", CV_LOAD_IMAGE_COLOR );
+      read_image(scene_plate.cols, scene_plate.rows, (char*)scene_plate.ptr());
+    }
+    void read_image(int width, int height, char *image)
+    {
+      cv::Mat Image(height, width, CV_8UC3, image);
+      // you may need to define the area of interest, where the test is found
+      // initializing Tesseract API
+      char *outText;
+      tesseract::TessBaseAPI *tess_api = new tesseract::TessBaseAPI();
+      if (tess_api->Init(NULL, "eng"))  // eng is a flag of which trained language you use, if you just train your own language, you           gave "XYZ" as a falge, you have to use it here
+      {
+        cout<<"Could not initialize tesseract.\n";
+        exit(1);
+      }
+      tess_api->SetVariable("tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZ012345789.-");
+      tess_api->SetImage((uchar*)plate_image.data, plate_image.size().width,    plate_image.size().height, plate_image.channels(),             plate_image.step1());
+      tess_api->Recognize(0);
+      char* out =tess_api->GetUTF8Text();
+      double confidence =ocr_plate.confidence = tess_api->MeanTextConf();
+      cout<<"OCR output:"<< out<< "  with confidence "<<confidence<<endl;
+    }
